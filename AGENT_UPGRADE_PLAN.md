@@ -1,53 +1,47 @@
-# AGENT UPGRADE PLAN: The "Council of AI" Architecture
-**Objective:** Evolve the Gemini CLI from a single-model agent into a Multi-Model Orchestrator with "One-Prompt" capability.
+# AGENT UPGRADE PLAN: The "Council of AI" Architecture (v6.0)
+**Objective:** Evolve the Gemini CLI into a Multi-Model Orchestrator with "One-Prompt" capability.
 
-## 1. THE ARCHITECTURE
-The goal is to eliminate "Single Point of Failure" logic by introducing a consensus mechanism using free resources.
+## 1. THE ARCHITECTURE (Ratified 2026-01-04)
+**Model:** Integrated Hierarchical Council.
+**Philosophy:** Accuracy-First (Gemini Pro) + Diversity-for-Validation (Groq).
 
 ### The "Council" Members
-| Role | Model / Provider | Method | Cost | Specialization |
-|------|-----------------|--------|------|----------------|
-| **The Architect** | **Gemini (Current)** | API | Free | Context management, file I/O, planning, user interaction. |
-| **The Critic** | **Llama 3 (via Groq)** | Cloud API | Free | High-speed logic checking, architectural review, error spotting. |
-| **The Specialist** | **DeepSeek Coder** | **Ollama (Local)** | Free | Deep algorithmic verification, null-safety checks, pure code generation. |
+| Role | Model / Provider | Method | Weight | Function |
+|------|-----------------|--------|--------|----------|
+| **Lead Architect** | **Gemini Pro** | API (Paid) | **3.0** | Synthesis, Architecture, Complex Logic. Final Authority. |
+| **Adversarial Validator** | **Llama 3 (Groq)** | API (Free) | **1.0** | Speed Checks, Security Scanning, Edge Case Detection. Can VETO. |
+| **Mediator** | **Gemini Pro** | API (Paid) | **N/A** | Spawns only on Deadlock. Rewrites prompts to unstick the Council. |
 
-## 2. WORKFLOW: The "Consensus Loop"
+## 2. WORKFLOW: The "Hierarchical Loop"
+1.  **Route:** `ComplexityRouter` assigns task. (Trivial -> Groq, Complex -> Gemini).
+2.  **Draft:** Lead Architect (Gemini) generates solution.
+3.  **Validate:** Adversarial Validator (Groq) tries to *break* the solution.
+4.  **Consensus:** 
+    - If Score > Threshold: **PASS**.
+    - If Groq Veto (Security): **BLOCK**.
+    - If Tie/Loop: **SPAWN MEDIATOR**.
 
-Instead of `Plan -> Code`, the new workflow is:
+## 3. IMPLEMENTATION STATUS
 
-1.  **Draft:** Gemini generates a code solution.
-2.  **Review:** Gemini passes the code to the `consensus_engine.py` script.
-3.  **Vote:**
-    *   **Groq:** Checks for high-level logic flaws.
-    *   **Ollama:** Checks for syntax/compilation risks.
-4.  **Refine:** If either voter detects high risk, Gemini self-corrects.
-5.  **Commit:** Only "Ratified" code is written to the file system.
+### Phase 4a: The Observer (Flight Recorder) - [COMPLETE]
+- [x] **Event Bus:** Zero-cost messaging with `LoopDetector` (Incident #002 fix).
+- [x] **Token Manager:** Proactive rate limiting for Groq and budget tracking for Gemini.
+- [x] **Dashboard:** `textual` TUI for real-time monitoring (`dashboard/app.py`).
 
-## 3. IMPLEMENTATION STEPS
+### Phase 4b: The Authority (Hierarchical Governance) - [NEXT]
+- [ ] **Refactor Council:** Implement 3.0 vs 1.0 weighting in `governance/gemini_council.py`.
+- [ ] **Complexity Router:** Create `governance/complexity.py` to route tasks.
+- [ ] **Agent Config:** Update `core/gemini_agent.py` to support multi-provider logic.
 
-### Phase 1: Infrastructure Setup (User Action)
-- [ ] **Install Ollama:** Download from [ollama.com](https://ollama.com).
-- [ ] **Pull Models:** Run `ollama pull deepseek-coder:6.7b` (or larger depending on RAM).
-- [ ] **Get Groq Key:** Sign up at [console.groq.com](https://console.groq.com) and generate a free API key.
-- [ ] **Configure Environment:** Add keys to a secure `.env` file (e.g., `GROQ_API_KEY=...`).
-
-### Phase 2: The Consensus Engine (Agent Action)
-- [ ] **Create `scripts/consensus.py`:**
-    - Python script to handle API requests to Groq and Localhost:11434.
-    - JSON-structured input/output for machine parsing.
-- [ ] **Create `scripts/ask_council.py`:**
-    - CLI wrapper for easier agent interaction.
-    - Usage: `python ask_council.py --snippet "fun main() { ... }" --focus "safety"`
-
-### Phase 3: Governance Integration
-- [ ] **Update `AI_AGENT_QUICKREF.md`:** Add a rule: *"Critical logic changes MUST pass Consensus Check."*
-- [ ] **Update Agent Capabilities:** Teach the agent (me) to call these scripts before modifying sensitive files (`LocationRepository`, `SensorRepository`).
+### Phase 4c: The Civilization (Dynamic Scaling) - [PENDING]
+- [ ] **Mediator Agent:** Implement deadlock resolution logic.
+- [ ] **Dynamic Spawning:** Logic to spin up temporary agents.
 
 ## 4. IMMEDIATE NEXT ACTIONS
-1.  **User:** Confirm installation of Ollama (optional but recommended) and Groq Key.
-2.  **Agent:** Scaffold the `scripts/` directory and write the connection test scripts.
+1.  **Refactor Council:** Update the voting logic to respect the new weights.
+2.  **Implement Router:** Build the decision logic for task assignment.
 
 ---
-**Status:** Drafted
-**Author:** Gemini CLI
+**Status:** In Progress (Phase 4b)
+**Author:** Gemini CLI (Ratified by Council)
 **Date:** 2026-01-04

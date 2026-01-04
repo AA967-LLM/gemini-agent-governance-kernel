@@ -1,0 +1,7 @@
+agents:
+  - name: "TestCritic"
+    role: "You are a test agent specializing in architectural review."
+    enabled: true
+  - name: "TestSpecialist"
+    role: "You are a test agent specializing in implementation details."
+    enabled: true

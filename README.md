@@ -1,57 +1,60 @@
-# Adaptive Agent Kernel (AAK) v5.2
+# Gemini Adaptive Agent Kernel (AAK) v6.0
 
-**A persistent, self-correcting operating system for LLMs running in local environments.**
+**The "Civilization" Update: A Persistent, Self-Correcting Hierarchical Council for Autonomous AI.**
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg) ![Platform](https://img.shields.io/badge/platform-PowerShell-blue) ![Author](https://img.shields.io/badge/author-Adeel%20Ahmad-orange)
+![License](https://img.shields.io/badge/license-MIT-blue.svg) ![Platform](https://img.shields.io/badge/platform-PowerShell-blue) ![Architecture](https://img.shields.io/badge/architecture-Hierarchical%20Council-green) ![Status](https://img.shields.io/badge/status-Production%20Ready-success)
 
-## 🧠 The Philosophy
-Most AI interactions are **stateless**: every new chat is a reset button. You repeat your preferences, your hardware limits, and your past corrections.
+## ðŸŒ  The Vision: From Agents to Civilization
+Most AI agents are lonely, hallucinating singletons. **Gemini v6.0** introduces a **Hierarchical Council** structure that mimics human engineering organizations to ensure accuracy, safety, and resilience.
 
-The **Adaptive Agent Kernel (AAK)** changes this by introducing a **Persistent Cognitive Layer**. It forces the AI to check a local "Long-Term Memory" before acting, enabling it to:
-1.  **Remember Failures:** Uses a "Reflexion Loop" to log mistakes as negative constraints.
-2.  **Enforce Safety:** Separates "Hard Invariants" (Safety) from "Soft Policies" (Preferences).
-3.  **Maintain State:** Tracks project status via a structured `WORKLOG.md`.
+It solves the "Single Point of Failure" problem by distributing cognition across specialized roles and models.
 
-## 🚀 Quick Start
+## ðŸ›ï¸ Core Architecture: The Integrated Hierarchical Council
+
+### 1. The Authority (Decision Logic)
+A weighted governance model that prioritizes accuracy over consensus.
+*   **Lead Architect (Gemini Pro):** **3.0 Weight**. Handles synthesis, architecture, and complex logic. The "Senior Principal Engineer".
+*   **Adversarial Validator (Llama 3 via Groq):** **1.0 Weight**. Handles speed checks, security scanning, and adversarial testing. The "QA/Security Engineer".
+*   **Routing:** A **Complexity Router** automatically assigns trivial tasks (formatting) to `Gemini Flash` and complex tasks to `Gemini Pro`.
+
+### 2. The Observer (Flight Recorder)
+A read-only TUI dashboard that makes AI reasoning visible in real-time.
+*   **Loop Detection:** Automatically halts execution if an agent gets stuck (3x repetition).
+*   **Fuel Gauge:** Tracks API quotas (Groq RPM) and Budget (Gemini $) to prevent outages.
+*   **Event Bus:** Zero-cost fire-and-forget messaging system.
+
+### 3. The Civilization (Self-Healing)
+*   **Deadlock Resolution:** If the Council deadlocks (Consensus Score 0.4-0.6), a **Mediator Agent** is spawned.
+*   **Chain-of-Verification:** The Mediator analyzes the conflict, reviews evidence, and rewrites instructions to "unstick" the team.
+*   **Trust Floor:** Security validation is *never* delegated to weak models (< 70B parameters).
+
+## ðŸš€ Quick Start
 
 ### Prerequisites
-* Windows / PowerShell 7+
-* Git
+* Python 3.12+
+* `groq` and `google-generativeai` API keys.
 
 ### Installation
-1.  Download `INSTALL.ps1`.
-2.  Run the script:
-    ```powershell
-    .\INSTALL.ps1
-    ```
-3.  The kernel will be installed to `~/.gemini/GEMINI_GLOBAL.md`.
+```powershell
+./INSTALL.ps1
+```
 
-## ⚡ Core Algorithms
+### Running the Kernel
+```powershell
+python run.py
+```
 
-### 1. The Reflexion Loop (Self-Correction)
-Instead of infinite retry loops, the kernel enforces a strict 3-strike termination rule:
-> *Error -> Analyze -> Log Constraint -> Retry -> (Stop at 3)*
+### Launching the Dashboard (Flight Recorder)
+Open a new terminal and run:
+```powershell
+python dashboard/app.py
+```
 
-### 2. Strategy Selection Matrix
-The kernel dynamically shifts strategies based on task confidence:
-* **High Confidence:** Direct Execution.
-* **Low Confidence:** Chain of Verification (Draft -> Critique -> Finalize).
+## ðŸ› ï¸ Technology Stack
+*   **Kernel:** Python 3.12 (AsyncIO)
+*   **Dashboard:** Textual (TUI)
+*   **Logic:** Gemini 1.5 Pro, Llama 3.3 70B, Mixtral 8x7B
+*   **Governance:** Pydantic (Schema Validation)
 
-## ⚖️ Disclaimer & Liability
-**This software is provided "as is", without warranty of any kind.**
-
-By using the Adaptive Agent Kernel (AAK), you acknowledge that:
-1.  **Experimental Nature:** This system modifies core agent behaviors and file system operations.
-2.  **No Liability:** In no event shall the author (**Adeel Ahmad**) be liable for any claim, damages, data loss, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
-3.  **User Responsibility:** You are solely responsible for reviewing code execution and securing your environment.
-
-**Use at your own risk.**
-
-## 👤 Author & Support
-
-Created and Maintained by **Adeel Ahmad**.
-
-* **Connect on LinkedIn:** [Adeel Ahmad](https://www.linkedin.com/in/engradeelahmad)
-
----
-*Copyright © 2026 Adeel Ahmad. All Rights Reserved.*
+## ðŸ“œ License
+MIT License. See `LICENSE` for details.
