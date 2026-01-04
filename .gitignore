@@ -1,0 +1,9 @@
+.env
+__pycache__/
+*.pyc
+Grok api - do not expose this in any case.md
+PROJECT_BRIEF_FOR_REVIEW.md
+deepseek.md
+claude.md
+chat gpt.md
+
