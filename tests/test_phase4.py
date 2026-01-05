@@ -12,7 +12,7 @@ async def test_adaptive_routing_trivial():
     tm = MagicMock(spec=TokenManager)
     # Mock async method properly
     future = asyncio.Future()
-    future.set_result((True, "OK", 0.0, "gemini-1.5-flash"))
+    future.set_result((True, "OK", 0.0, "gemini-3-flash"))
     tm.can_make_request.return_value = future
     
     router = AdaptiveRouter(tm)
@@ -46,26 +46,26 @@ async def test_council_hierarchy_veto():
             "AdversarialValidator_1": {"verdict": VerdictType.FAIL, "confidence": 1.0}
         }
         
-        # We mock route_task to avoid router logic in this specific test
         council.router.route_task = MagicMock()
         route_future = asyncio.Future()
-        route_future.set_result(MagicMock(model="gemini-1.5-pro", primary_provider="google"))
+        route_future.set_result(MagicMock(model="gemini-3-pro", primary_provider="google"))
         council.router.route_task.return_value = route_future
         
         result = await council.deliberate("code", "context")
         assert result["consensus"]["decision"] == "FAIL"
         assert "Blocked by Veto" in result["consensus"]["reason"]
 
-    @pytest.mark.asyncio
-    async def test_mediator_deadlock_trigger():
-        """Test that Mediator is triggered on deadlock."""
-        config = [
-            {"name": "LeadArchitect", "weight": 3.0, "veto_power": False},
-            {"name": "AdversarialValidator", "weight": 1.0, "veto_power": True}
-        ]
-        council = GeminiCouncil(config=config)
-    
-        # Mock deadlock scenario (0.5 score)    with patch.object(council, '_run_agents') as mock_run:
+@pytest.mark.asyncio
+async def test_mediator_deadlock_trigger():
+    """Test that Mediator is triggered on deadlock."""
+    config = [
+        {"name": "LeadArchitect", "weight": 3.0, "veto_power": False},
+        {"name": "AdversarialValidator", "weight": 1.0, "veto_power": True}
+    ]
+    council = GeminiCouncil(config=config)
+
+    # Mock deadlock scenario (0.5 score)
+    with patch.object(council, '_run_agents') as mock_run:
         mock_run.return_value = {
             "LeadArchitect_0": {"verdict": VerdictType.PASS, "confidence": 0.5},
             "AdversarialValidator_1": {"verdict": VerdictType.WARN, "confidence": 0.5}
@@ -80,9 +80,10 @@ async def test_council_hierarchy_veto():
         })
         council.mediator.attempt_resolution.return_value = future
         
+        # Mock Router
         council.router.route_task = MagicMock()
         route_future = asyncio.Future()
-        route_future.set_result(MagicMock(model="gemini-1.5-pro", primary_provider="google"))
+        route_future.set_result(MagicMock(model="gemini-3-pro", primary_provider="google"))
         council.router.route_task.return_value = route_future
         
         result = await council.deliberate("code", "context")

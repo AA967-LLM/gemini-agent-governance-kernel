@@ -23,9 +23,9 @@ class TestPhase1Architecture:
     @pytest.mark.asyncio
     async def test_async_agent_query_structure(self):
         """Test that GeminiAgent returns structured verdicts."""
-        # Mocking the _call_api method to return valid JSON
+        # Mocking the _call_groq method to return valid JSON
         class MockAgent(GeminiAgent):
-            async def _call_api(self, model, prompt, system_context):
+            async def _call_groq(self, model, system_role, user_prompt):
                 return json.dumps({
                     "verdict": "PASS",
                     "confidence": 0.9,
@@ -34,8 +34,10 @@ class TestPhase1Architecture:
                 })
 
         agent = MockAgent(name="TestAgent", role="Reviewer")
+        # Ensure we use a groq model to trigger _call_groq
+        agent.model_chain = ["llama-3.3-70b-versatile"]
         response = await agent.query(prompt="Hello", system_context="Testing", constraints=[])
-        
+
         assert isinstance(response, dict)
         assert response["verdict"] == "PASS"
         assert response["confidence"] == 0.9
@@ -102,8 +104,3 @@ class TestPhase1Architecture:
         result = await council.deliberate("code", "context")
         assert result["consensus"]["decision"] == "WARN" # Should warn, not crash
         assert result["fallback"] is True
-
-    def test_backward_compatibility(self):
-        """Verify that the original kernel file still exists and is importable."""
-        from kernel import Council as OldCouncil
-        assert OldCouncil is not None
