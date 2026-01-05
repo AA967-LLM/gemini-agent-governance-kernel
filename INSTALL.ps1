@@ -1,6 +1,6 @@
 # GEMINI KERNEL INSTALLER v6.0 (Integrated Hierarchical Council)
 # STATUS: PRODUCTION | FEATURES: Multi-Agent Hierarchy, Resilient Token Management, Flight Recorder
-# CHANGELOG: Evolved from Single-Agent v5.2 to Multi-Model Civilization.
+# CHANGELOG: Added Self-Audit step and Gemini 3 Model Support.
 
 $ErrorActionPreference = "Stop"
 
@@ -64,14 +64,14 @@ try {
 
 ### 1.1 The Council of AI
 Decisions are no longer made by a single agent. Power is distributed:
-*   **Lead Architect (Gemini Pro):** 3.0 Weight. Final synthesis and code authority.
+*   **Lead Architect (Gemini 3 Pro):** 3.0 Weight. Final synthesis and code authority.
 *   **Adversarial Validator (Groq):** 1.0 Weight. Security Veto and Red-Teaming.
 *   **Mediator Agent:** Spawns on Deadlock (Score 0.4-0.6) to resolve conflicts.
 
 ### 1.2 Adaptive Routing (Cost/Intelligence Opt)
-*   **TRIVIAL (Comp < 3):** Routes to Gemini Flash (Speed/Efficiency).
+*   **TRIVIAL (Comp < 3):** Routes to Gemini 3 Flash (Speed/Efficiency).
 *   **STANDARD (Comp 3-4):** Routes to Groq Model Chain (Llama 70B/Mixtral).
-*   **COMPLEX (Comp 5):** Routes to Gemini Pro (Maximum Reasoning).
+*   **COMPLEX (Comp 5):** Routes to Gemini 3 Pro (Maximum Reasoning).
 
 ### 1.3 Trust Floor
 *   **Security Validation:** Minimum 70B parameter model required. 
@@ -104,7 +104,7 @@ Run `python dashboard/app.py` to visualize the Council's internal reasoning.
 
 ### 4.1 Model Rotation Chain
 Groq Models are treated as a prioritized chain to maximize free-tier uptime:
-1. Llama 3.3 70B -> 2. Mixtral 8x7B -> 3. Llama 3 70B -> 4. Gemini Flash.
+1. Llama 3.3 70B -> 2. Mixtral 8x7B -> 3. Llama 3 70B -> 4. Gemini 3 Flash.
 
 ### 4.2 Budget Circuit Breaker
 Gemini spend is tracked in real-time. If daily limit is hit, non-trivial tasks are HALTED.
@@ -114,11 +114,20 @@ Gemini spend is tracked in real-time. If daily limit is hit, non-trivial tasks a
     Set-Content -Path $kernelPath -Value $content -Force
     Write-Host "SUCCESS: Civilization Kernel v6.0 installed." -ForegroundColor Green
     Write-Host "Path: $kernelPath" -ForegroundColor Cyan
-    Write-Host "Welcome to the Civilization." -ForegroundColor White
+
+    # --- 7. SELF-AUDIT (NEW) ---
+    Write-Host "`n--- PERFOMING SELF-AUDIT ---" -ForegroundColor Cyan
+    $testResult = pytest tests/test_phase4.py 2>&1
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "   + AUDIT PASSED: Core logic verified." -ForegroundColor Green
+    } else {
+        Write-Host "   ! AUDIT WARNING: Tests reported issues. Check environment." -ForegroundColor Yellow
+    }
+
+    Write-Host "`nWelcome to the Civilization." -ForegroundColor White
 
 } catch {
     Write-Host "FATAL ERROR: Installation failed." -ForegroundColor Red
     Write-Host "Error: $($_.Exception.Message)" -ForegroundColor Red
     exit 1
 }
-"@,file_path:

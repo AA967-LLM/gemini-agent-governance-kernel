@@ -131,18 +131,24 @@
             <div class="mermaid">
                 graph TD
                     User[User] --> Router[Adaptive Router]
-                    Router -->|Trivial| Flash[Gemini Flash]
+                    Router -->|Trivial| Flash[Gemini 3 Flash]
                     Router -->|Complex| Council[Gemini Council]
                     
                     subgraph "The Council (Hierarchical)"
-                        Council --> Lead[Lead Architect (Gemini Pro)]
-                        Council --> Validator[Adversarial Validator (Groq)]
+                        Council --> Lead[Lead Architect (Gemini 3 Pro)]
+                        Council --> Validator[Adversarial Validator (Llama 70B)]
                         Lead -->|Draft| Voting[Consensus Engine]
                         Validator -->|Critique/Veto| Voting
                     end
                     
                     Voting -->|Deadlock| Mediator[Mediator Agent]
                     Voting -->|Consensus| Output[Final Output]
+                    
+                    subgraph "Connectivity Bridge"
+                        Lead -.->|API Key| GoogleAPI[Google AI Studio]
+                        Lead -.->|Fallback| CLI[Local 'gemini' CLI]
+                        Validator -.-> GroqAPI[Groq Cloud]
+                    end
                     
                     subgraph "The Observer"
                         Bus[Event Bus] --> Dashboard[TUI Flight Recorder]
@@ -157,7 +163,7 @@
         <div class="grid">
             <div class="card">
                 <h3><i class="fas fa-brain"></i> The Authority</h3>
-                <p><strong>Gemini Pro (Weight 3.0)</strong> leads synthesis and architecture. <strong>Groq (Weight 1.0)</strong> provides adversarial validation and security checks. Veto power ensures safety without deadlock.</p>
+                <p><strong>Gemini 3 Pro (Weight 3.0)</strong> leads synthesis and architecture. <strong>Groq (Weight 1.0)</strong> provides adversarial validation and security checks. Veto power ensures safety without deadlock.</p>
             </div>
             <div class="card">
                 <h3><i class="fas fa-eye"></i> The Observer</h3>
@@ -178,7 +184,7 @@ python run.py
 # Launch the Flight Recorder (New Terminal)
 python dashboard/app.py
 
-# Run Tests
+# Run Verification Suite
 pytest tests/test_phase4.py
             </pre>
         </div>
