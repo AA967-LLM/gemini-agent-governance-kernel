@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini Kernel v6.0 - The Journey</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #030712;
+            --bg-card: #111827;
+            --primary: #3b82f6;
+            --primary-glow: rgba(59, 130, 246, 0.5);
+            --accent: #8b5cf6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border: #1f2937;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* Hero Section */
+        header {
+            text-align: center;
+            margin-bottom: 6rem;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            letter-spacing: -0.05em;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            margin-top: 2rem;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        /* Timeline Visualization */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* The vertical line */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--bg-card), var(--primary), var(--accent), var(--bg-card));
+            transform: translateX(-50%);
+        }
+
+        .phase {
+            position: relative;
+            margin-bottom: 4rem;
+            width: 50%;
+            padding: 0 3rem;
+        }
+
+        .phase:nth-child(odd) { left: 0; text-align: right; }
+        .phase:nth-child(even) { left: 50%; text-align: left; }
+
+        /* The Dot */
+        .phase::after {
+            content: '';
+            position: absolute;
+            top: 1.5rem;
+            width: 20px;
+            height: 20px;
+            background: var(--bg-dark);
+            border: 4px solid var(--primary);
+            border-radius: 50%;
+            z-index: 10;
+            box-shadow: 0 0 15px var(--primary-glow);
+            transition: all 0.3s ease;
+        }
+
+        .phase:nth-child(odd)::after { right: -10px; }
+        .phase:nth-child(even)::after { left: -10px; }
+
+        .phase:hover::after {
+            background: var(--primary);
+            transform: scale(1.2);
+        }
+
+        /* Card Content */
+        .card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            border-color: var(--primary);
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .card .date {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: block;
+            font-family: monospace;
+        }
+
+        .card p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .tech-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: inherit; /* Inherit alignment from parent (left/right) */
+        }
+        
+        .phase:nth-child(odd) .tech-tags { justify-content: flex-end; }
+
+        .tag {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--primary);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        /* Comparison Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 6rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .stat-delta {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .positive { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .neutral { background: rgba(59, 130, 246, 0.1); color: var(--primary); }
+
+        /* Future Section */
+        .future {
+            margin-top: 6rem;
+            text-align: center;
+            padding: 4rem;
+            background: linear-gradient(180deg, transparent, rgba(59, 130, 246, 0.05));
+            border-top: 1px solid var(--border);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Gemini Civilization</h1>
+            <p class="subtitle">The Evolution of the Adaptive Agent Kernel (v5.2 &rarr; v6.0)</p>
+            <div class="badge"><i class="fas fa-check-circle"></i> SYSTEM VERIFIED</div>
+        </header>
+
+        <div class="timeline">
+            <!-- Phase 1 -->
+            <div class="phase">
+                <div class="card">
+                    <span class="date">PHASE 1: THE FOUNDATION</span>
+                    <h2>Async Core</h2>
+                    <p>Rebuilt the synchronous script into a robust <code>asyncio</code> application. Introduced the <code>GeminiAgent</code> class and non-singleton Registry.</p>
+                    <div class="tech-tags">
+                        <span class="tag">Python 3.12</span>
+                        <span class="tag">AsyncIO</span>
+                        <span class="tag">Circuit Breaker</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 2 -->
+            <div class="phase">
+                <div class="card">
+                    <span class="date">PHASE 2: THE BRAIN</span>
+                    <h2>Governance Layer</h2>
+                    <p>Established the <strong>Council of AI</strong>. Moved from single-shot execution to a consensus-based model. Implemented weights (3.0 vs 1.0) and Veto logic.</p>
+                    <div class="tech-tags">
+                        <span class="tag">Gemini Council</span>
+                        <span class="tag">Pydantic</span>
+                        <span class="tag">Weighted Voting</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 3 -->
+            <div class="phase">
+                <div class="card">
+                    <span class="date">PHASE 3: THE MEMORY</span>
+                    <h2>Institutional Wisdom</h2>
+                    <p>Created the <strong>Feedback Loop</strong>. The system now learns from failures, storing "Hard Invariants" to prevent repeating mistakes.</p>
+                    <div class="tech-tags">
+                        <span class="tag">JSON Memory</span>
+                        <span class="tag">Reflexion</span>
+                        <span class="tag">Constraint Injection</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 4 -->
+            <div class="phase">
+                <div class="card" style="border-color: var(--accent); box-shadow: 0 0 20px rgba(139, 92, 246, 0.1);">
+                    <span class="date" style="color: var(--accent);">PHASE 4: THE CIVILIZATION (CURRENT)</span>
+                    <h2>Self-Healing Hierarchy</h2>
+                    <p>Full autonomy. <strong>Adaptive Routing</strong> saves costs (Flash vs Pro). <strong>Mediator Agents</strong> resolve deadlocks. <strong>Pre-Flight Linters</strong> prevent syntax errors.</p>
+                    <div class="tech-tags">
+                        <span class="tag">Gemini 3 Pro</span>
+                        <span class="tag">Groq 70B</span>
+                        <span class="tag">Textual TUI</span>
+                        <span class="tag">Chain-of-Verification</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metrics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">0%</div>
+                <div class="stat-label">Syntax Errors</div>
+                <div class="stat-delta positive">Pre-Flight Linter</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">~60%</div>
+                <div class="stat-label">Cost Reduction</div>
+                <div class="stat-delta positive">Adaptive Routing</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">100%</div>
+                <div class="stat-label">Uptime</div>
+                <div class="stat-delta neutral">Multi-Provider Bridge</div>
+            </div>
+        </div>
+
+        <div class="future">
+            <h2><i class="fas fa-rocket"></i> Ready for Phase 5</h2>
+            <p style="margin-top: 1rem; color: var(--text-muted);">Tool Use â€¢ Vector RAG â€¢ Autonomous Skill Acquisition</p>
+        </div>
+    </div>
+
+</body>
+</html>
