@@ -45,7 +45,7 @@ try {
 
     # --- 4. PYTHON DEPENDENCY SYNC ---
     Write-Host "--- Syncing Civilization Dependencies ---" -ForegroundColor Cyan
-    $packages = @("groq", "google-generativeai", "pydantic", "textual", "aiohttp", "pytest", "pytest-asyncio", "python-dotenv")
+    $packages = @("groq", "google-generativeai", "pydantic", "textual", "aiohttp", "pytest", "pytest-asyncio", "python-dotenv", "black")
     foreach ($pkg in $packages) {
         Write-Host "   + Installing $pkg..." -ForegroundColor Gray
         pip install $pkg --quiet
