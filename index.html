@@ -112,6 +112,12 @@
             border-radius: 0.5rem;
             margin-bottom: 2rem;
         }
+        
+        .success-box {
+            border-left: 4px solid var(--success);
+            padding-left: 1rem;
+            margin-top: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -175,6 +181,17 @@
                 <h3><i class="fas fa-shield-alt"></i> The Civilization</h3>
                 <p>Self-healing capability. If the Council deadlocks, a <strong>Mediator Agent</strong> spawns autonomously to resolve the conflict. Includes a <strong>Pre-Flight Linter</strong> to reject syntax errors automatically.</p>
             </div>
+        </div>
+        
+        <div class="card" style="margin-bottom: 2rem; border-color: var(--success);">
+            <h3><i class="fas fa-check-circle"></i> Case Study: Anti-Hallucination Veto</h3>
+            <p><strong>Scenario:</strong> Lead Architect (Gemini 3) confidently approves unsafe SQL code.</p>
+            <div class="success-box">
+                <p><strong>Result:</strong> INTERCEPTED.</p>
+                <code>[SecurityValidator] Reviewing... verdict: FAIL (Confidence: 1.0)</code><br>
+                <code>DECISION: FAIL -> Blocked by Veto</code>
+            </div>
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--gray);">Verified via <em>scripts/demo_veto.py</em> on 2026-01-05.</p>
         </div>
 
         <div class="card">

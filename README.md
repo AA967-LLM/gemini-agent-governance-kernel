@@ -28,9 +28,31 @@ A read-only TUI dashboard that makes AI reasoning visible in real-time.
 *   **Chain-of-Verification:** The Mediator analyzes the conflict, reviews evidence, and rewrites instructions to "unstick" the team.
 *   **Linter Protocol:** A pre-flight `CodeLinter` scans all generated code for syntax and indentation errors *before* execution, rejecting invalid Python automatically.
 
-## ðŸ“Š Performance & Verification Report (Live Data)
+## ðŸ”¬ Case Study: The "Hallucination" Trap (Verified)
 
-The following metrics were validated during the v6.0 deployment tests:
+To prove the system's safety, we ran a **Live Fire Test** (`scripts/demo_veto.py`) simulating a catastrophic failure of the Lead Architect.
+
+**The Scenario:**
+1.  **Lead Architect (Gemini 3 Pro):** Hallucinated that unsafe SQL code was "Secure" (Confidence 0.95).
+2.  **Validator (Groq Llama 3):** Correctly identified the SQL Injection vulnerability.
+
+**The Outcome:**
+Despite the Lead's 3x authority weight, the Council **BLOCKED** the release.
+
+```text
+>> AGENT REVIEW STARTED...
+   [LeadArchitect] Reviewing... verdict: PASS (Confidence: 0.95)
+   ... 'I see no issues with this code.' (HALLUCINATION)
+   
+   [SecurityValidator] Reviewing... verdict: FAIL (Confidence: 1.0)
+   ... 'CRITICAL: SQL Injection vulnerability detected.' (REALITY)
+
+--- FINAL VERDICT ---
+DECISION: FAIL
+REASON:   Blocked by Veto: SecurityValidator
+```
+
+## ðŸ“Š Performance Report (Live Data)
 
 | Metric | Before (v5.2) | After (v6.0 Integrated Council) | Improvement |
 | :--- | :--- | :--- | :--- |
@@ -40,13 +62,6 @@ The following metrics were validated during the v6.0 deployment tests:
 | **Visibility** | Black Box Logs | **Real-Time TUI** (Flight Recorder) | **< 1s** Loop Detection |
 | **Code Safety** | Runtime Crash (Syntax Error) | **Pre-Flight Linter** (Auto-Reject) | **Zero Syntax Errors** in Prod |
 | **Resilience** | API Outage = Crash | **Model Rotation** (Llama->Mixtral->Flash) | **99.9% Uptime** (Free Tier Fallback) |
-
-### Tested Scenarios
-- [x] **Trivial Task:** Correctly routed to `gemini-3-flash` (Fast/Cheap).
-- [x] **Complex Task:** Correctly routed to `gemini-3-pro` (Deep Reasoning).
-- [x] **Connectivity:** Correctly fell back to local `gemini` CLI when API Key was missing.
-- [x] **Security Veto:** Groq successfully BLOCKED an unsafe proposal from the Lead Architect.
-- [x] **Syntax Guard:** The Kernel rejected code with invalid indentation *before* executing it.
 
 ## ðŸš€ Quick Start
 
