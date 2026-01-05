@@ -18,7 +18,7 @@ async def test_adaptive_routing_trivial():
     router = AdaptiveRouter(tm)
     route = await router.route_task("Fix typo", complexity=1)
     
-    assert route.model == "gemini-1.5-flash"
+    assert route.model == "gemini-3-flash"
     assert route.primary_provider == "google"
 
 @pytest.mark.asyncio
@@ -28,7 +28,7 @@ async def test_adaptive_routing_complex():
     router = AdaptiveRouter(tm)
     route = await router.route_task("Architect system", complexity=5)
     
-    assert route.model == "gemini-1.5-pro"
+    assert route.model == "gemini-3-pro"
     assert route.primary_provider == "google"
 
 @pytest.mark.asyncio
