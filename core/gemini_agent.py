@@ -43,9 +43,9 @@ class GeminiAgent:
         self.role = role
         self.model_chain = model_chain or [
             "gemini-3-pro", 
-            "gemini-1.5-pro",
-            "llama-3.3-70b-versatile",
             "gemini-3-flash",
+            "llama-3.3-70b-versatile",
+            "gemini-2.5-pro",
             "gemini-2.5-flash"
         ]
         self.groq_key = os.environ.get("GROQ_API_KEY")

@@ -12,7 +12,7 @@ class TestGeminiCLIIntegration:
         Audit: Ensure API Key is used PREFERENCE over CLI if available.
         """
         with patch.dict('os.environ', {'GOOGLE_API_KEY': 'fake_key', 'GROQ_API_KEY': 'fake_groq'}):
-            agent = GeminiAgent("TestBot", "Tester", model_chain=["gemini-1.5-pro"])
+            agent = GeminiAgent("TestBot", "Tester", model_chain=["gemini-3-pro"])
             
             # Mock the REST API call
             agent._call_gemini_api = AsyncMock(return_value=json.dumps({
@@ -37,7 +37,7 @@ class TestGeminiCLIIntegration:
         # Ensure NO Google Key in env
         with patch.dict('os.environ', {'GOOGLE_API_KEY': '', 'GROQ_API_KEY': 'fake_groq'}):
             with patch('shutil.which', return_value='/usr/bin/gemini'):
-                agent = GeminiAgent("TestBot", "Tester", model_chain=["gemini-1.5-pro"])
+                agent = GeminiAgent("TestBot", "Tester", model_chain=["gemini-3-pro"])
                 
                 # Verify state
                 assert agent.gemini_key is None or agent.gemini_key == ""
@@ -63,7 +63,7 @@ class TestGeminiCLIIntegration:
         with patch.dict('os.environ', {'GOOGLE_API_KEY': '', 'GROQ_API_KEY': 'fake_groq'}):
             # Mock CLI missing
             with patch('shutil.which', return_value=None):
-                agent = GeminiAgent("TestBot", "Tester", model_chain=["gemini-1.5-pro", "llama-3.3-70b-versatile"])
+                agent = GeminiAgent("TestBot", "Tester", model_chain=["gemini-3-pro", "llama-3.3-70b-versatile"])
                 
                 assert agent.has_gemini_cli is False
                 

@@ -75,7 +75,7 @@ class TokenManager:
             if self.gemini_spend_today + cost > self.limits.daily_budget:
                 return False, "Budget Exceeded", 0.0, None
                 
-            return True, "OK", 0.0, "gemini-1.5-pro" # Default, Router overrides for Flash
+            return True, "OK", 0.0, "gemini-3-pro" # Default, Router overrides for Flash
             
         return False, "Unknown Provider", 0.0, None
 
