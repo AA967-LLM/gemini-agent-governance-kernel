@@ -1,6 +1,6 @@
-# GEMINI KERNEL INSTALLER v5.2 (Production Gold)
-# STATUS: FINAL | FEATURES: Auto-Backup, Version Lock, Session ID, Recovery
-# CHANGELOG: Removed ghost reference to recovery.json, Verified template integrity.
+# GEMINI KERNEL INSTALLER v6.0 (Integrated Hierarchical Council)
+# STATUS: PRODUCTION | FEATURES: Multi-Agent Hierarchy, Resilient Token Management, Flight Recorder
+# CHANGELOG: Added Self-Audit step and Gemini 3 Model Support.
 
 $ErrorActionPreference = "Stop"
 
@@ -11,7 +11,7 @@ try {
     $geminiDir = Join-Path $homeDir ".gemini"
     $kernelPath = Join-Path $geminiDir "GEMINI_GLOBAL.md"
     
-    Write-Host "[Session: $sessionId] Initializing Installer..." -ForegroundColor Cyan
+    Write-Host "[Session: $sessionId] Initializing Gemini v6.0 Civilization Installer..." -ForegroundColor Cyan
 
     # --- 2. DIRECTORY SAFETY ---
     if (-not (Test-Path $geminiDir)) {
@@ -23,14 +23,12 @@ try {
     $shouldInstall = $true
     if (Test-Path $kernelPath) {
         $existingContent = Get-Content $kernelPath -Raw
-        # Check existing version to prevent accidental downgrade
         if ($existingContent -match '\[v(\d+\.\d+)\]') {
             $currentVer = [version]$Matches[1]
-            $newVer = [version]"5.2"
+            $newVer = [version]"6.0"
             
             if ($currentVer -gt $newVer) {
                 Write-Host "STOP: Installed version (v$currentVer) is newer than installer (v$newVer)." -ForegroundColor Yellow
-                Write-Host "   To force install, delete the existing file." -ForegroundColor Gray
                 $shouldInstall = $false
             }
         }
@@ -45,135 +43,88 @@ try {
 
     if (-not $shouldInstall) { exit }
 
-    # --- 4. THE v5.2 KERNEL CONTENT ---
+    # --- 4. PYTHON DEPENDENCY SYNC ---
+    Write-Host "--- Syncing Civilization Dependencies ---" -ForegroundColor Cyan
+    $packages = @("groq", "google-generativeai", "pydantic", "textual", "aiohttp", "pytest", "pytest-asyncio", "python-dotenv", "black")
+    foreach ($pkg in $packages) {
+        Write-Host "   + Installing $pkg..." -ForegroundColor Gray
+        pip install $pkg --quiet
+    }
+
+    # --- 5. THE v6.0 KERNEL CONTENT ---
     $content = @"
-# ADAPTIVE AGENT PRODUCTION KERNEL [v5.2]
-# INTEGRATION: AAP + SAFETY PROTOCOLS + OBSERVABILITY
+# ADAPTIVE AGENT CIVILIZATION KERNEL [v6.0]
+# ARCHITECTURE: INTEGRATED HIERARCHICAL COUNCIL
 # STATUS: ACTIVE | MODE: PRODUCTION
 # INSTALLED: $(Get-Date -Format 'yyyy-MM-dd HH:mm') | SESSION: $sessionId
 
 ---
 
-## SECTION 1: THE COGNITIVE LAYER
+## SECTION 1: GOVERNANCE HIERARCHY
 
-### 1.1 The Advanced Reflexion Loop
-**IF** failure occurs:
-1.  **CLASSIFY:** Identify Failure Type (Logic / Tooling / Hallucination).
-2.  **LOG:** Write to `[NEGATIVE_CONSTRAINTS]`.
-3.  **RETRY:** Re-execute using the new constraint.
-4.  **TERMINATION RULE:** If the *same* failure occurs 3 times -> **STOP**.
-    * *Action:* Generate a summary of the failure and request Human Intervention. Do not loop infinitely.
+### 1.1 The Council of AI
+Decisions are no longer made by a single agent. Power is distributed:
+*   **Lead Architect (Gemini 3 Pro):** 3.0 Weight. Final synthesis and code authority.
+*   **Adversarial Validator (Groq):** 1.0 Weight. Security Veto and Red-Teaming.
+*   **Mediator Agent:** Spawns on Deadlock (Score 0.4-0.6) to resolve conflicts.
 
-### 1.2 Confidence & Strategy Matrix
-*Output must include Confidence Tags for complex tasks.*
+### 1.2 Adaptive Routing (Cost/Intelligence Opt)
+*   **TRIVIAL (Comp < 3):** Routes to Gemini 3 Flash (Speed/Efficiency).
+*   **STANDARD (Comp 3-4):** Routes to Groq Model Chain (Llama 70B/Mixtral).
+*   **COMPLEX (Comp 5):** Routes to Gemini 3 Pro (Maximum Reasoning).
 
-| Context | Strategy | Confidence Thresholds |
-| :--- | :--- | :--- |
-| **Coding** | *Chain of Thought* | **High**: Linted & Tested. <br>**Med**: Syntax valid, untested. <br>**Low**: Conceptual/Pseudo-code. |
-| **Architecture** | *Chain of Verification* | **High**: Matches official docs/specs. <br>**Low**: Extrapolated/Theoretical. |
-| **Data/Fact** | *Direct Execution* | **High**: Found in `[USER_FACTS]` or `[SRC]`. |
-
-### 1.3 Dynamic Memory Banks
-#### [HARD_INVARIANTS] (Safety - Non-Negotiable)
-* **H1:** Never invent file contents. Read explicitly.
-* **H2:** Never scan root drives. Scope to Project Dir.
-* **H3:** Always probe `pwsh -version` before claiming incompatibility.
-
-#### [SOFT_POLICIES] (Preferences)
-* **S1:** Default to PowerShell 7.x+ syntax.
-* **S2:** Weekly Food Caddy Reminder (Anchor: 2025-11-20).
-
-#### [NEGATIVE_CONSTRAINTS] (Learning Log)
-* *Review Policy:* On the 1st of every month, ask User to review constraints.
+### 1.3 Trust Floor
+*   **Security Validation:** Minimum 70B parameter model required. 
+*   **Fallback:** If Groq is exhausted, failover to Gemini Pro/Flash. Never use < 70B for security.
 
 ---
 
-## SECTION 2: EXECUTION GUARDRAILS
+## SECTION 2: THE OBSERVER (FLIGHT RECORDER)
 
-### 2.1 The Global Execution Loop
-1.  **PRE-FLIGHT:** Check `.ai/WORKLOG.md` & `git status`.
-2.  **INIT:** If new/missing -> **TRIGGER i-init**.
-3.  **PLAN:** Outline changes. *Ask: "Can this be cleanly undone?"*
-4.  **BUILD:** Write code incrementally.
-5.  **VERIFY:** Run tests/linters.
-6.  **RECORD:** Log action with Actor ID.
+### 2.1 Real-Time Telemetry
+All agents MUST broadcast state via the `Zero-Cost Event Bus`.
+*   **LOOP_DETECTED:** Triggered on 3x identical action hashes. **HALT & REDIRECT.**
+*   **TOKEN_ALERT:** Triggered at 80% daily budget or RPM limit.
 
-### 2.2 Destructive Operation Protocol
-**Trigger:** Deleting files, Overwriting data, Force-pushing Git.
-**Action:**
-1.  **STOP.**
-2.  **PREVIEW:** Show exactly what will be deleted/changed.
-3.  **CONFIRM:** Require explicit user approval before executing.
-
-### 2.3 Evidence Standards
-* **[SRC:path:line]**: Mandatory for code citations.
-* **[CMD:command]**: Mandatory for execution claims.
-* **[TBD:known]**: Valid placeholder for accessible info.
-* **[TBD:unknown]**: Risk flag for missing dependencies.
+### 2.2 Dashboard Protocol
+Run `python dashboard/app.py` to visualize the Council's internal reasoning.
 
 ---
 
-## SECTION 3: AUTOMATION & TELEMETRY
+## SECTION 3: INSTITUTIONAL MEMORY
 
-### 3.1 The i-init Protocol
-**Trigger:** Missing `.ai` folder or Explicit Request.
-**Action:**
-1.  Create `.ai/WORKLOG.md` (Source of Truth).
-2.  Check for `.git`; if missing, suggest `git init`.
-
-### 3.2 The WORKLOG Template (Source of Truth)
-# WORKLOG - Project Source of Truth
-
-## Status Dashboard
-* **Phase:** [Discovery/Building/Verification]
-* **Confidence:** [High/Med/Low]
-* **Git Branch:** [branch-name]
-* **Session:** $sessionId
-* **Metrics:** Success:[0] | Failures:[0]
-
-## Definition of Done
-- [ ] Requirements Met
-- [ ] Tests Passed
-- [ ] Documentation Updated
-
-## Progress Log (Append Only)
-- $(Get-Date -Format 'yyyy-MM-dd HH:mm') [Agent] [Session:$sessionId] - Log initialized
-
-## TBD Registry (Risk Management)
-| ID | Description | Impact | Resolution Path |
-|----|-------------|--------|-----------------|
-|    |             |        |                 |
-
-## Next Actions
-1. [ ] Define first step
+### 3.1 Tiered Constraint Library
+1.  **EXPERIMENTAL:** Learned from recent session failures.
+2.  **VALIDATED:** Promoted after 5 successful sessions without violation.
+3.  **HARD_INVARIANT:** Constitutional rules. Mediator CANNOT rewrite these.
 
 ---
 
-## SECTION 4: RECOVERY PROTOCOLS
+## SECTION 4: RECOVERY & RESILIENCE
 
-### 4.1 Kernel Recovery
-**If kernel file is corrupted/missing:**
-1. Check for `.gemini/GEMINI_GLOBAL.md.bak-`*
-2. Restore most recent backup.
+### 4.1 Model Rotation Chain
+Groq Models are treated as a prioritized chain to maximize free-tier uptime:
+1. Llama 3.3 70B -> 2. Mixtral 8x7B -> 3. Llama 3 70B -> 4. Gemini 3 Flash.
 
-### 4.2 Session Recovery
-**If interrupted mid-task:**
-1. Check WORKLOG for last complete action.
-2. Resume from next logical step using [RECOVERED] tag.
+### 4.2 Budget Circuit Breaker
+Gemini spend is tracked in real-time. If daily limit is hit, non-trivial tasks are HALTED.
 "@
 
-    # --- 5. WRITE & VERIFY ---
+    # --- 6. WRITE & VERIFY ---
     Set-Content -Path $kernelPath -Value $content -Force
-    
-    # Integrity Check (Verify file size is > 1KB)
-    if ((Get-Item $kernelPath).Length -lt 1000) {
-        throw "File integrity check failed. File is too small or empty."
+    Write-Host "SUCCESS: Civilization Kernel v6.0 installed." -ForegroundColor Green
+    Write-Host "Path: $kernelPath" -ForegroundColor Cyan
+
+    # --- 7. SELF-AUDIT (NEW) ---
+    Write-Host "`n--- PERFOMING SELF-AUDIT ---" -ForegroundColor Cyan
+    $testResult = pytest tests/test_phase4.py 2>&1
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "   + AUDIT PASSED: Core logic verified." -ForegroundColor Green
+    } else {
+        Write-Host "   ! AUDIT WARNING: Tests reported issues. Check environment." -ForegroundColor Yellow
     }
 
-    Write-Host "SUCCESS: Enterprise Kernel v5.2 installed." -ForegroundColor Green
-    Write-Host "Path: $kernelPath" -ForegroundColor Cyan
-    Write-Host "Features: Backup, Recovery, Termination Rules, Session Tracking" -ForegroundColor Cyan
-    Write-Host "Next Step: Your agent is now running the Production Kernel." -ForegroundColor White
+    Write-Host "`nWelcome to the Civilization." -ForegroundColor White
 
 } catch {
     Write-Host "FATAL ERROR: Installation failed." -ForegroundColor Red

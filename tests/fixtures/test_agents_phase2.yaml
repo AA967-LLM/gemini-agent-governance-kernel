@@ -1,0 +1,10 @@
+agents:
+  - name: "TestCritic"
+    role: "Architectural Reviewer"
+    weight: 0.5
+    veto_power: false
+  
+  - name: "TestSecurity"
+    role: "Security Reviewer"
+    weight: 1.0
+    veto_power: true
