@@ -142,7 +142,9 @@
                     end
                     
                     Voting -->|Deadlock| Mediator[Mediator Agent]
-                    Voting -->|Consensus| Output[Final Output]
+                    Voting -->|Consensus| Linter[Code Linter]
+                    Linter -->|Syntax OK| Output[Final Output]
+                    Linter -->|Syntax Fail| Lead
                     
                     subgraph "Connectivity Bridge"
                         Lead -.->|API Key| GoogleAPI[Google AI Studio]
@@ -171,7 +173,7 @@
             </div>
             <div class="card">
                 <h3><i class="fas fa-shield-alt"></i> The Civilization</h3>
-                <p>Self-healing capability. If the Council deadlocks, a <strong>Mediator Agent</strong> spawns autonomously to resolve the conflict using Chain-of-Verification.</p>
+                <p>Self-healing capability. If the Council deadlocks, a <strong>Mediator Agent</strong> spawns autonomously to resolve the conflict. Includes a <strong>Pre-Flight Linter</strong> to reject syntax errors automatically.</p>
             </div>
         </div>
 
